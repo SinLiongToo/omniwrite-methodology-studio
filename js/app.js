@@ -466,6 +466,19 @@
     document.getElementById("tab-btn-ai").textContent = t.tabAI;
     document.getElementById("tab-btn-encyclopedia").textContent = t.tabEncyclopedia;
 
+    const footerStats = document.getElementById("footer-stats");
+    if (footerStats) {
+      footerStats.textContent = state.lang === "zh"
+        ? "6 大領域 × 24 種社群與商業面試載體 × 16 大寫作架構 × 7 大 AI 平台"
+        : "6 Fields × 24 Formats × 16 Frameworks × 7 LLM Providers";
+    }
+    const footerDate = document.getElementById("footer-update-date");
+    if (footerDate) {
+      footerDate.textContent = state.lang === "zh"
+        ? "📅 最後更新日期 (Update Date)：2026-10-18"
+        : "📅 Last Updated: 2026-10-18";
+    }
+
     updateApiButtonBadge();
     renderPresetDropdown();
     renderToneChips();
