@@ -296,12 +296,19 @@
         </div>
       </div>
 
-      <div class="mt-5 flex items-center justify-between gap-2">
-        <span class="text-xs" style="color: var(--muted-foreground);">💡 提示：在「✨ AI 即時生成」分頁亦可快速切換模型</span>
-        <button id="btn-save-api" type="button"
-                class="px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold">
-          💾 儲存設定
-        </button>
+      <div class="mt-5 flex flex-wrap items-center justify-between gap-2">
+        <span class="text-xs" style="color: var(--muted-foreground);">💡 金鑰僅儲存在您的瀏覽器本機</span>
+        <div class="flex items-center gap-2">
+          <button id="btn-save-api" type="button"
+                  class="px-3.5 py-2 rounded-lg border text-xs font-semibold hover:opacity-90"
+                  style="background: var(--accent); border-color: var(--border);">
+            💾 僅儲存設定
+          </button>
+          <button id="btn-save-and-run-api" type="button"
+                  class="px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold shadow-sm">
+            🚀 儲存並立即生成初稿
+          </button>
+        </div>
       </div>
     </div>
   </div>

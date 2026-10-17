@@ -334,7 +334,7 @@
       document.getElementById("api-modal").classList.add("hidden");
     });
 
-    document.getElementById("btn-save-api").addEventListener("click", () => {
+    const saveApiFromModal = () => {
       state.llmConfig.provider = document.getElementById("api-provider").value;
       state.llmConfig.apiKey = document.getElementById("api-key-input").value.trim();
       state.llmConfig.model = document.getElementById("api-model-input").value.trim();
@@ -347,11 +347,29 @@
 
       document.getElementById("api-modal").classList.add("hidden");
       updateApiButtonBadge();
+    };
+
+    document.getElementById("btn-save-api").addEventListener("click", () => {
+      saveApiFromModal();
       if (state.activeTab === "ai") {
         renderRightWorkspace();
       }
       showToast(state.lang === "zh" ? `🔑 已儲存模型設定：${state.llmConfig.model}` : `🔑 Saved Model: ${state.llmConfig.model}`);
     });
+
+    const saveAndRunBtn = document.getElementById("btn-save-and-run-api");
+    if (saveAndRunBtn) {
+      saveAndRunBtn.addEventListener("click", () => {
+        saveApiFromModal();
+        state.activeTab = "ai";
+        renderTabsState();
+        renderRightWorkspace();
+        setTimeout(() => {
+          const runBtn = document.getElementById("btn-run-llm");
+          if (runBtn) runBtn.click();
+        }, 60);
+      });
+    }
 
     syncInputsFromState();
     renderAll();
@@ -929,6 +947,7 @@
     const masterPrompt = window.buildMasterPrompt(state);
     const provKey = state.llmConfig.provider || "gemini";
     const provMeta = window.LLM_PROVIDERS[provKey] || window.LLM_PROVIDERS.gemini;
+    const hasKeyOrLocal = Boolean(state.llmConfig.apiKey || !provMeta.requiresKey);
 
     const providerOptionsHtml = Object.keys(window.LLM_PROVIDERS).map(k => {
       const p = window.LLM_PROVIDERS[k];
@@ -940,74 +959,137 @@
     }).join("") + `<option value="__custom__" ${!provMeta.models.some(m => m.id === state.llmConfig.model) ? "selected" : ""}>✏️ 自訂模型 (${state.llmConfig.model})</option>`;
 
     container.innerHTML = `
-      <div class="mb-5">
+      <!-- 1. 頂部 AI 引擎控制台（直接選模型＋貼金鑰＋一鍵生成初稿） -->
+      <div class="p-4 rounded-xl border mb-5" style="background: var(--accent); border-color: var(--border);">
         <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
           <div>
             <h3 class="text-base font-bold">${t.aiStudioTitle}</h3>
-            <p class="text-xs mt-0.5" style="color: var(--muted-foreground);">${t.aiStudioDesc}</p>
+            <p class="text-xs mt-0.5" style="color: var(--muted-foreground);">
+              步驟：① 選擇供應商與模型 ➔ ② 貼上 API Key ➔ ③ 點擊右側「🚀 立即生成完整初稿」
+            </p>
           </div>
-          <div class="flex items-center gap-2">
-            <button type="button" id="btn-copy-master-prompt" class="px-3.5 py-2 rounded-lg border text-xs font-semibold hover:opacity-90 transition-all"
-                    style="background: var(--card); border-color: var(--border);">
-              ${t.btnCopyPrompt}
-            </button>
-            <button type="button" id="btn-run-llm" class="px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold shadow-sm transition-all">
-              ${state.isGeneratingAI ? t.btnRunningLLM : t.btnRunLLM}
-            </button>
-          </div>
+          <button type="button" id="btn-run-llm"
+                  class="px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs sm:text-sm font-bold shadow-lg transition-all flex items-center gap-1.5">
+            ${state.isGeneratingAI ? t.btnRunningLLM : "🚀 點此呼叫 AI 立即生成完整初稿"}
+          </button>
         </div>
 
-        <!-- 內嵌快速模型切換列 (Inline Quick Model Switcher) -->
-        <div class="p-3.5 rounded-xl border mb-3 grid grid-cols-1 md:grid-cols-12 gap-2.5 items-center"
-             style="background: var(--accent); border-color: var(--border);">
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-2.5 items-end">
           <div class="md:col-span-4">
-            <label class="block text-xs font-semibold mb-1" style="color: var(--muted-foreground);">🤖 供應商 (7 大平台)：</label>
-            <select id="inline-provider-select" class="w-full px-2.5 py-1.5 rounded-lg border text-xs font-medium"
+            <label class="block text-xs font-semibold mb-1" style="color: var(--muted-foreground);">1️⃣ 供應商 (7 大平台)：</label>
+            <select id="inline-provider-select" class="w-full px-2.5 py-2 rounded-lg border text-xs font-medium"
                     style="background: var(--card); border-color: var(--border); color: var(--foreground);">
               ${providerOptionsHtml}
             </select>
           </div>
-          <div class="md:col-span-6">
-            <label class="block text-xs font-semibold mb-1" style="color: var(--muted-foreground);">🧠 選擇模型 (30+ 旗艦/推理/輕量模型)：</label>
-            <select id="inline-model-select" class="w-full px-2.5 py-1.5 rounded-lg border text-xs font-medium"
+          <div class="md:col-span-4">
+            <label class="block text-xs font-semibold mb-1" style="color: var(--muted-foreground);">2️⃣ 選擇模型 (30+ 模型)：</label>
+            <select id="inline-model-select" class="w-full px-2.5 py-2 rounded-lg border text-xs font-medium"
                     style="background: var(--card); border-color: var(--border); color: var(--foreground);">
               ${modelOptionsHtml}
             </select>
           </div>
-          <div class="md:col-span-2 flex items-end justify-end pt-4 md:pt-5">
-            <button type="button" id="btn-inline-open-key" class="w-full px-2.5 py-1.5 rounded-lg border text-xs font-semibold text-center hover:border-indigo-400"
-                    style="background: var(--card); border-color: var(--border);">
-              🔑 金鑰/自訂
-            </button>
+          <div class="md:col-span-4">
+            <div class="flex items-center justify-between mb-1">
+              <label class="text-xs font-semibold" style="color: var(--muted-foreground);">
+                3️⃣ API Key ${hasKeyOrLocal ? '<span class="text-emerald-400 font-bold">(🟢 已設定)</span>' : '<span class="text-amber-400 font-bold">(⚠️ 請貼上金鑰)</span>'}：
+              </label>
+              <button type="button" id="btn-inline-open-key" class="text-xs text-indigo-400 hover:underline">進階設定</button>
+            </div>
+            <input id="inline-apikey-input" type="password"
+                   value="${state.llmConfig.apiKey || ""}"
+                   placeholder="${provMeta.keyPlaceholder}"
+                   class="w-full px-2.5 py-1.5 rounded-lg border text-xs font-mono focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                   style="background: var(--card); border-color: var(--border); color: var(--foreground);" />
           </div>
         </div>
-
-        <pre id="master-prompt-box" class="p-4 rounded-xl border text-xs font-mono leading-relaxed whitespace-pre-wrap max-h-72 overflow-y-auto"
-             style="background: var(--background); border-color: var(--border); color: var(--foreground);"></pre>
       </div>
 
-      <!-- AI 生成結果區 -->
-      <div id="ai-result-section" class="${state.aiOutputText ? "" : "hidden"}">
-        <div class="flex items-center justify-between gap-2 mb-2.5">
-          <h4 class="font-bold text-sm text-emerald-400">${t.aiOutputTitle}（Model: ${state.llmConfig.model}）</h4>
+      <!-- 2. 錯誤訊息橫幅（避免 iframe 阻擋 alert） -->
+      <div id="ai-error-banner" class="${state.aiErrorMsg ? "" : "hidden"} p-4 rounded-xl border border-rose-500/50 bg-rose-500/15 text-rose-300 text-xs mb-5 leading-relaxed">
+        <div class="font-bold text-sm text-rose-400 mb-1">❌ AI 生成發生錯誤</div>
+        <div id="ai-error-text">${state.aiErrorMsg || ""}</div>
+      </div>
+
+      <!-- 3. AI 初稿生成結果區（置頂顯示，永遠可見！） -->
+      <div id="ai-result-section" class="mb-6 p-4 rounded-xl border" style="background: var(--background); border-color: var(--border);">
+        <div class="flex flex-wrap items-center justify-between gap-2 mb-3 pb-2.5 border-b" style="border-color: var(--border);">
           <div class="flex items-center gap-2">
-            <button type="button" id="btn-copy-ai-output" class="px-3 py-1 rounded-lg border text-xs"
+            <span class="text-base">✨</span>
+            <h4 class="font-bold text-sm text-emerald-400">
+              ${t.aiOutputTitle}（目前模型：<code class="text-indigo-400">${state.llmConfig.model}</code>）
+            </h4>
+          </div>
+          <div class="flex items-center gap-2 ${state.aiOutputText ? "" : "hidden"}">
+            <button type="button" id="btn-copy-ai-output" class="px-3 py-1.5 rounded-lg border text-xs font-semibold hover:opacity-90"
                     style="background: var(--card); border-color: var(--border);">
-              📋 Copy
+              📋 複製 AI 初稿全文
             </button>
-            <button type="button" id="btn-ai-to-editor" class="px-3 py-1 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold">
+            <button type="button" id="btn-ai-to-editor" class="px-3.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold shadow-sm">
               ${t.btnSendAiToEditor}
             </button>
           </div>
         </div>
-        <div id="ai-output-box" class="p-4 rounded-xl border text-sm leading-relaxed whitespace-pre-wrap font-sans"
-             style="background: var(--card); border-color: var(--border);"></div>
+
+        ${state.isGeneratingAI ? `
+          <div class="py-12 text-center space-y-3">
+            <div class="inline-block px-4 py-2 rounded-full bg-indigo-500/20 text-indigo-300 text-xs font-bold animate-pulse">
+              ⏳ 正在呼叫 ${provMeta.name} (${state.llmConfig.model}) 撰寫完整初稿中...
+            </div>
+            <p class="text-xs" style="color: var(--muted-foreground);">
+              AI 正在根據您選擇的領域、社群規範與【${state.methodId.toUpperCase()}】寫作方法論生成「5個破題鉤子 + 切角分析 + 段落大綱 + 完整初稿」，約需 5–15 秒。
+            </p>
+          </div>
+        ` : state.aiOutputText ? `
+          <div id="ai-output-box" class="p-4 rounded-xl border text-sm leading-relaxed whitespace-pre-wrap font-sans"
+               style="background: var(--card); border-color: var(--border);"></div>
+        ` : `
+          <div class="py-8 px-4 text-center space-y-3">
+            <p class="text-xs leading-relaxed" style="color: var(--muted-foreground);">
+              ${hasKeyOrLocal
+                ? "✅ 您的 API Key 已就緒！請點擊下方按鈕，AI 將立即為您撰寫「5 個破題標題 ＋ 策略分析 ＋ 結構大綱 ＋ 可直接發布的完整初稿」："
+                : "💡 請先在上方第 3 欄貼上您的 API Key（例如 Google Gemini 或 OpenAI 金鑰），接著點擊下方按鈕即可直接在此生成完整初稿："}
+            </p>
+            <button type="button" id="btn-run-llm-center"
+                    class="px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold shadow-md transition-all">
+              🚀 立即用 ${state.llmConfig.model} 生成完整初稿
+            </button>
+          </div>
+        `}
+      </div>
+
+      <!-- 4. 結構化 Master Prompt 預覽區（供免 API 複製到外部 AI 使用） -->
+      <div class="p-4 rounded-xl border" style="background: var(--card); border-color: var(--border);">
+        <div class="flex flex-wrap items-center justify-between gap-2 mb-2.5">
+          <div>
+            <h4 class="text-xs font-bold" style="color: var(--muted-foreground);">
+              📋 附錄：自動組合之結構化 Master Prompt（若不接 API，亦可一鍵複製貼到 ChatGPT / Claude / Gemini 網頁版）
+            </h4>
+          </div>
+          <button type="button" id="btn-copy-master-prompt" class="px-3 py-1 rounded-lg border text-xs font-semibold hover:opacity-90 transition-all"
+                  style="background: var(--accent); border-color: var(--border);">
+            ${t.btnCopyPrompt}
+          </button>
+        </div>
+        <pre id="master-prompt-box" class="p-3.5 rounded-xl border text-xs font-mono leading-relaxed whitespace-pre-wrap max-h-56 overflow-y-auto"
+             style="background: var(--background); border-color: var(--border); color: var(--foreground);"></pre>
       </div>
     `;
 
     document.getElementById("master-prompt-box").textContent = masterPrompt;
-    if (state.aiOutputText) {
-      document.getElementById("ai-output-box").textContent = state.aiOutputText;
+    if (state.aiOutputText && !state.isGeneratingAI) {
+      const outBox = document.getElementById("ai-output-box");
+      if (outBox) outBox.textContent = state.aiOutputText;
+    }
+
+    // 綁定內嵌 API Key 即時輸入儲存
+    const inlineKeyInput = document.getElementById("inline-apikey-input");
+    if (inlineKeyInput) {
+      inlineKeyInput.addEventListener("input", (e) => {
+        state.llmConfig.apiKey = e.target.value.trim();
+        localStorage.setItem("omniwrite_apikey", state.llmConfig.apiKey);
+        updateApiButtonBadge();
+      });
     }
 
     // 綁定內嵌供應商與模型快速切換
@@ -1033,6 +1115,7 @@
       state.llmConfig.model = val;
       localStorage.setItem("omniwrite_model", state.llmConfig.model);
       updateApiButtonBadge();
+      renderAIStudioView(container);
       showToast(state.lang === "zh" ? `🧠 已切換模型為：${val}` : `🧠 Switched model to: ${val}`);
     });
 
@@ -1044,17 +1127,28 @@
       copyText(masterPrompt);
     });
 
-    const runBtn = document.getElementById("btn-run-llm");
-    runBtn.addEventListener("click", async () => {
+    const triggerGeneration = async () => {
       if (state.isGeneratingAI) return;
+      // 同步讀取頁面上輸入框的 API Key
+      const currentInlineKey = document.getElementById("inline-apikey-input")?.value?.trim();
+      if (currentInlineKey) {
+        state.llmConfig.apiKey = currentInlineKey;
+        localStorage.setItem("omniwrite_apikey", currentInlineKey);
+        updateApiButtonBadge();
+      }
+
       if (provMeta.requiresKey && !state.llmConfig.apiKey) {
-        document.getElementById("btn-open-api-modal").click();
+        state.aiErrorMsg = `請先在上方「3️⃣ API Key」欄位貼上您的 ${provMeta.name} 金鑰，再點擊生成！`;
+        renderAIStudioView(container);
+        const keyEl = document.getElementById("inline-apikey-input");
+        if (keyEl) keyEl.focus();
         return;
       }
+
       try {
+        state.aiErrorMsg = "";
         state.isGeneratingAI = true;
-        runBtn.textContent = t.btnRunningLLM;
-        runBtn.disabled = true;
+        renderAIStudioView(container);
         const result = await window.callLLMGenerate(state.llmConfig, masterPrompt);
         state.aiOutputText = result;
         state.isGeneratingAI = false;
@@ -1062,11 +1156,16 @@
         showToast(state.lang === "zh" ? "✨ AI 客製化初稿生成完成！" : "✨ AI Generation Complete!");
       } catch (err) {
         state.isGeneratingAI = false;
-        runBtn.textContent = t.btnRunLLM;
-        runBtn.disabled = false;
-        alert(err.message || "API Error");
+        state.aiErrorMsg = err.message || "API 呼叫失敗，請檢查 API Key 與網路連線。";
+        renderAIStudioView(container);
       }
-    });
+    };
+
+    const runBtn = document.getElementById("btn-run-llm");
+    if (runBtn) runBtn.addEventListener("click", triggerGeneration);
+
+    const runBtnCenter = document.getElementById("btn-run-llm-center");
+    if (runBtnCenter) runBtnCenter.addEventListener("click", triggerGeneration);
 
     const copyAiBtn = document.getElementById("btn-copy-ai-output");
     if (copyAiBtn) {
@@ -1080,6 +1179,7 @@
         state.activeTab = "editor";
         renderTabsState();
         renderRightWorkspace();
+        showToast(state.lang === "zh" ? "✍️ 已將 AI 初稿送入草稿編輯器！" : "✍️ Sent AI output to Draft Editor!");
       });
     }
   }

@@ -384,8 +384,7 @@ window.callLLMGenerate = async function(config, promptText) {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        systemInstruction: { parts: [{ text: systemInstruction }] },
-        contents: [{ role: "user", parts: [{ text: promptText }] }],
+        contents: [{ role: "user", parts: [{ text: `${systemInstruction}\n\n${promptText}` }] }],
         generationConfig: {
           temperature: 0.75,
           maxOutputTokens: 4096
