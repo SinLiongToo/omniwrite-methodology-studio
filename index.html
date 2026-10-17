@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="zh-Hant" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OmniWrite 寫作方法論總合工作台｜Cross-Field Writing Methodology Studio</title>
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js" onerror="var s=document.createElement('script');s.src='https://cdn.tailwindcss.com';document.head.appendChild(s);"></script>
+  <style>
+    :root,
+    [data-theme="dark"] {
+      --background: #0b0f19;
+      --card: #131b2e;
+      --accent: #1c2742;
+      --border: #283556;
+      --foreground: #f1f5f9;
+      --muted-foreground: #94a3b8;
+      --primary: #6366f1;
+      --primary-foreground: #ffffff;
+    }
+
+    [data-theme="light"] {
+      --background: #f8fafc;
+      --card: #ffffff;
+      --accent: #f1f5f9;
+      --border: #cbd5e1;
+      --foreground: #0f172a;
+      --muted-foreground: #475569;
+      --primary: #4f46e5;
+      --primary-foreground: #ffffff;
+    }
+
+    body {
+      background-color: var(--background);
+      color: var(--foreground);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang TC", "Microsoft JhengHei", sans-serif;
+    }
+
+    /* 自訂捲軸 */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: var(--background);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 9999px;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <!-- Toast 通知 -->
+  <div id="toast-banner"
+       class="fixed bottom-5 right-5 z-50 px-4 py-2.5 rounded-xl bg-indigo-600 text-white text-xs font-semibold shadow-xl transition-all duration-200 opacity-0 pointer-events-none translate-y-2">
+    ✅ 已複製到剪貼簿！
+  </div>
+
+  <!-- 頂部導覽列 Header -->
+  <header class="sticky top-0 z-30 border-b backdrop-blur-md"
+          style="background: color-mix(in srgb, var(--card) 90%, transparent); border-color: var(--border);">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-3">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-xl bg-indigo-600 text-white flex items-center justify-center font-bold text-lg shadow-sm">
+          ✍️
+        </div>
+        <div>
+          <h1 id="app-title" class="text-base sm:text-lg font-bold tracking-tight">OmniWrite 寫作方法論總合工作台</h1>
+          <p id="app-subtitle" class="text-xs" style="color: var(--muted-foreground);">
+            橫跨 6 大領域 × 23 種社群載體 × 14 大經典寫作架構的智慧範本與方向生成引擎
+          </p>
+        </div>
+      </div>
+
+      <!-- 工具列：範例選擇、API 設定、雙語切換、深淺主題切換 -->
+      <div class="flex flex-wrap items-center gap-2">
+        <div class="flex items-center gap-1.5">
+          <label id="label-preset" for="preset-selector" class="text-xs font-medium hidden sm:inline" style="color: var(--muted-foreground);">
+            🎲 載入實戰範例：
+          </label>
+          <select id="preset-selector"
+                  class="px-2.5 py-1.5 rounded-lg border text-xs font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  style="background: var(--accent); border-color: var(--border); color: var(--foreground);">
+            <option value="">選擇一個跨領域範例快速體驗...</option>
+          </select>
+        </div>
+
+        <button id="btn-open-api-modal" type="button"
+                class="px-3 py-1.5 rounded-lg border text-xs font-semibold transition-all hover:opacity-90"
+                style="background: var(--accent); border-color: var(--border); color: var(--foreground);">
+          🔑 AI API 設定
+        </button>
+
+        <button id="btn-lang-toggle" type="button"
+                class="px-3 py-1.5 rounded-lg border text-xs font-semibold transition-all hover:opacity-90"
+                style="background: var(--accent); border-color: var(--border); color: var(--foreground);">
+          🌐 EN / 中文
+        </button>
+
+        <button id="btn-theme-toggle" type="button"
+                class="px-3 py-1.5 rounded-lg border text-xs font-semibold transition-all hover:opacity-90"
+                style="background: var(--accent); border-color: var(--border); color: var(--foreground);">
+          ☀️ Light
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- 主內容雙欄工作台 -->
+  <main class="max-w-7xl w-full mx-auto px-4 py-5 flex-1 grid grid-cols-1 lg:grid-cols-12 gap-5">
+
+    <!-- 左側設定欄：STEP 1 (輸入) + STEP 2 (領域與社群) + STEP 3 (方法論選擇) -->
+    <section class="lg:col-span-5 space-y-5">
+
+      <!-- STEP 1: 輸入寫作靈感與素材 -->
+      <div class="p-4 rounded-2xl border shadow-sm" style="background: var(--card); border-color: var(--border);">
+        <div class="mb-3">
+          <h2 id="step1-title" class="text-sm font-bold text-indigo-400">STEP 1｜輸入你的寫作主題與素材</h2>
+          <p id="step1-sub" class="text-xs mt-0.5" style="color: var(--muted-foreground);">
+            填入越具體，生成的結構範本與切角方向越精準
+          </p>
+        </div>
+
+        <div class="space-y-3">
+          <div>
+            <label id="label-topic" for="input-topic" class="block text-xs font-semibold mb-1">核心主題 / 想寫的內容 (Topic)</label>
+            <input id="input-topic" type="text"
+                   class="w-full px-3 py-2 rounded-lg border text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                   style="background: var(--background); border-color: var(--border); color: var(--foreground);" />
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label id="label-audience" for="input-audience" class="block text-xs font-semibold mb-1">目標受眾 / 讀者群</label>
+              <input id="input-audience" type="text"
+                     class="w-full px-3 py-2 rounded-lg border text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                     style="background: var(--background); border-color: var(--border); color: var(--foreground);" />
+            </div>
+            <div>
+              <label id="label-goal" for="input-goal" class="block text-xs font-semibold mb-1">寫作目的與行動呼籲</label>
+              <input id="input-goal" type="text"
+                     class="w-full px-3 py-2 rounded-lg border text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                     style="background: var(--background); border-color: var(--border); color: var(--foreground);" />
+            </div>
+          </div>
+
+          <div>
+            <label id="label-pain" for="input-pain" class="block text-xs font-semibold mb-1">受眾痛點 / 研究缺口 / 戲劇衝突</label>
+            <textarea id="input-pain" rows="2"
+                      class="w-full px-3 py-2 rounded-lg border text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                      style="background: var(--background); border-color: var(--border); color: var(--foreground);"></textarea>
+          </div>
+
+          <div>
+            <label id="label-tone" for="input-tone" class="block text-xs font-semibold mb-1">語氣與文風 (Tone & Style)</label>
+            <input id="input-tone" type="text"
+                   class="w-full px-3 py-2 rounded-lg border text-xs mb-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                   style="background: var(--background); border-color: var(--border); color: var(--foreground);" />
+            <div id="tone-chips-container" class="flex flex-wrap gap-1.5"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 2: 選擇領域與社群載體 -->
+      <div class="p-4 rounded-2xl border shadow-sm" style="background: var(--card); border-color: var(--border);">
+        <div class="mb-3">
+          <h2 id="step2-title" class="text-sm font-bold text-indigo-400">STEP 2｜選擇使用範圍（領域 Field ＆ 社群載體）</h2>
+          <p id="step2-sub" class="text-xs mt-0.5" style="color: var(--muted-foreground);">
+            不同領域與社群平台有截然不同的閱讀節奏與演算法偏好
+          </p>
+        </div>
+
+        <!-- 6 大領域卡片 -->
+        <div id="fields-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 mb-4"></div>
+
+        <!-- 子平台選擇 -->
+        <div>
+          <div id="label-select-platform" class="text-xs font-semibold mb-2">選擇目標社群或文體載體：</div>
+          <div id="platforms-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-2"></div>
+        </div>
+      </div>
+
+      <!-- STEP 3: 選擇寫作方法論 -->
+      <div class="p-4 rounded-2xl border shadow-sm" style="background: var(--card); border-color: var(--border);">
+        <div class="mb-3">
+          <h2 id="step3-title" class="text-sm font-bold text-indigo-400">STEP 3｜選擇寫作方法論 (Writing Methodology)</h2>
+          <p id="step3-sub" class="text-xs mt-0.5" style="color: var(--muted-foreground);">
+            系統已根據所選領域標註「🔥 領域首選」，亦可切換分類或混搭第二種技法
+          </p>
+        </div>
+
+        <!-- 分類篩選 Pills -->
+        <div id="category-pills" class="flex flex-wrap gap-1.5 mb-3"></div>
+
+        <!-- 方法論清單 -->
+        <div id="methodologies-list" class="space-y-2.5 max-h-96 overflow-y-auto pr-1"></div>
+
+        <!-- 進階混搭選擇器 -->
+        <div class="mt-4 pt-3 border-t" style="border-color: var(--border);">
+          <label id="label-hybrid" for="select-secondary-method" class="block text-xs font-semibold mb-1.5">
+            🔀 進階混搭（選填第二種輔助寫作法）：
+          </label>
+          <select id="select-secondary-method"
+                  class="w-full px-3 py-2 rounded-lg border text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  style="background: var(--background); border-color: var(--border); color: var(--foreground);">
+          </select>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- 右側輸出工作台：STEP 4 (方向、結構範本、互動編輯器、AI 生成、方法論全圖鑑) -->
+    <section class="lg:col-span-7 flex flex-col">
+
+      <!-- 導覽分頁 Tabs -->
+      <div class="flex flex-wrap gap-2 mb-4 p-1.5 rounded-xl border" style="background: var(--card); border-color: var(--border);">
+        <button id="tab-btn-blueprint" type="button" data-tab-target="blueprint"
+                class="flex-1 min-w-[140px] px-3 py-2 rounded-lg text-xs font-bold transition-all">
+          🧭 寫作方向與結構範本
+        </button>
+        <button id="tab-btn-editor" type="button" data-tab-target="editor"
+                class="flex-1 min-w-[140px] px-3 py-2 rounded-lg text-xs font-bold transition-all">
+          ✍️ 互動草稿與檢核工作台
+        </button>
+        <button id="tab-btn-ai" type="button" data-tab-target="ai"
+                class="flex-1 min-w-[140px] px-3 py-2 rounded-lg text-xs font-bold transition-all">
+          ✨ AI 即時生成 & Master Prompt
+        </button>
+        <button id="tab-btn-encyclopedia" type="button" data-tab-target="encyclopedia"
+                class="flex-1 min-w-[140px] px-3 py-2 rounded-lg text-xs font-bold transition-all">
+          📖 方法論全圖鑑對照
+        </button>
+      </div>
+
+      <!-- 動態工作台內容容器 -->
+      <div id="workspace-content" class="p-5 rounded-2xl border shadow-sm flex-1"
+           style="background: var(--card); border-color: var(--border);">
+      </div>
+
+    </section>
+  </main>
+
+  <!-- LLM API 設定 Modal -->
+  <div id="api-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+    <div class="w-full max-w-lg p-5 rounded-2xl border shadow-2xl" style="background: var(--card); border-color: var(--border);">
+      <div class="flex items-center justify-between mb-3">
+        <h3 class="text-base font-bold">🔑 AI 模型與 API 串接設定（支援 7 大供應商・30+ 模型）</h3>
+        <button id="btn-close-api-modal" type="button" class="text-xs px-2 py-1 rounded border" style="border-color: var(--border);">✕</button>
+      </div>
+      <p class="text-xs mb-4 leading-relaxed" style="color: var(--muted-foreground);">
+        本工具內建完整的離線結構範本與 Master Prompt 引擎（免金鑰即可使用）。若想在頁面上直接呼叫 AI 生成客製化初稿，可選擇以下任一供應商與模型（金鑰僅儲存於您的瀏覽器本機 <code>localStorage</code>）。
+      </p>
+
+      <div class="space-y-3">
+        <div>
+          <label class="block text-xs font-semibold mb-1">1. 選擇 AI 供應商 (Provider)</label>
+          <select id="api-provider" class="w-full px-3 py-2 rounded-lg border text-xs font-medium"
+                  style="background: var(--background); border-color: var(--border); color: var(--foreground);">
+            <option value="gemini">Google Gemini API（Gemini 2.5 Pro / Flash）</option>
+            <option value="openai">OpenAI Official API（GPT-4.1 / GPT-4o / o3-mini / o1）</option>
+            <option value="anthropic">Anthropic Claude API（Claude Sonnet 4 / 3.7 / 3.5）</option>
+            <option value="openrouter">OpenRouter 聚合平台（一把 Key 暢用 Claude / Gemini / DeepSeek / Llama）</option>
+            <option value="deepseek">DeepSeek 官方 API（DeepSeek-V3 / R1 推理模型）</option>
+            <option value="groq">Groq Cloud 超高速推理（Llama 3.3 70B / Qwen QwQ / R1）</option>
+            <option value="local">Ollama / LM Studio 本機離線模型（免 API Key）</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold mb-1">2. 選擇推薦模型清單 (Preset Models)</label>
+          <select id="api-model-select" class="w-full px-3 py-2 rounded-lg border text-xs"
+                  style="background: var(--background); border-color: var(--border); color: var(--foreground);">
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold mb-1">3. 實際呼叫模型 ID（可由上方選單帶入，或手動輸入任意新模型名稱）</label>
+          <input id="api-model-input" type="text" placeholder="例如：gemini-2.5-pro、gpt-4.1、claude-3-7-sonnet-latest..."
+                 class="w-full px-3 py-2 rounded-lg border text-xs font-mono"
+                 style="background: var(--background); border-color: var(--border); color: var(--foreground);" />
+        </div>
+
+        <div id="apikey-wrapper">
+          <label class="block text-xs font-semibold mb-1">4. API Key 金鑰</label>
+          <input id="api-key-input" type="password" placeholder="AIzaSy... 或 sk-..."
+                 class="w-full px-3 py-2 rounded-lg border text-xs font-mono"
+                 style="background: var(--background); border-color: var(--border); color: var(--foreground);" />
+        </div>
+
+        <div id="baseurl-wrapper" class="hidden">
+          <label class="block text-xs font-semibold mb-1">5. API Base URL（可自訂代理或本機端點）</label>
+          <input id="api-baseurl-input" type="text" placeholder="https://api.openai.com/v1"
+                 class="w-full px-3 py-2 rounded-lg border text-xs font-mono"
+                 style="background: var(--background); border-color: var(--border); color: var(--foreground);" />
+        </div>
+      </div>
+
+      <div class="mt-5 flex items-center justify-between gap-2">
+        <span class="text-xs" style="color: var(--muted-foreground);">💡 提示：在「✨ AI 即時生成」分頁亦可快速切換模型</span>
+        <button id="btn-save-api" type="button"
+                class="px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold">
+          💾 儲存設定
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 載入知識庫與互動邏輯 -->
+  <script src="data/methodologies.js"></script>
+  <script src="js/llm-client.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
