@@ -7,7 +7,7 @@
   const i18n = {
     zh: {
       appTitle: "OmniWrite 寫作方法論總合工作台",
-      appSubtitle: "橫跨 6 大領域 × 24 種社群與商業面試載體 × 16 大經典寫作架構的智慧範本與方向生成引擎",
+      appSubtitle: "橫跨 6 大領域 × 25 種社群與商業面試載體 × 17 大經典寫作架構的智慧範本與方向生成引擎",
       presetLabel: "🎲 載入實戰範例：",
       presetPlaceholder: "選擇一個跨領域範例快速體驗...",
       apiBtn: "🔑 AI 模型與 API 設定",
@@ -60,14 +60,14 @@
       btnRunningLLM: "⏳ AI 正在深度撰寫中...",
       aiOutputTitle: "✨ AI 客製化生成結果",
       btnSendAiToEditor: "📥 將 AI 生成結果送入草稿編輯器",
-      encTitle: "📖 跨領域寫作與面試方法論全圖鑑（16 大核心框架一覽）",
+      encTitle: "📖 跨領域寫作與面試方法論全圖鑑（17 大核心框架一覽）",
       encSub: "點擊任一卡片可直接套用為目前的主寫作法",
       useThisMethod: "套用此方法論",
       copiedToast: "✅ 已複製到剪貼簿！"
     },
     en: {
       appTitle: "OmniWrite Methodology Studio",
-      appSubtitle: "Cross-Field Writing, Business Interview & Community Template Engine (6 Fields × 24 Formats × 16 Frameworks)",
+      appSubtitle: "Cross-Field Writing, Business Interview & Community Template Engine (6 Fields × 25 Formats × 17 Frameworks)",
       presetLabel: "🎲 Load Example:",
       presetPlaceholder: "Pick a real-world preset to explore...",
       apiBtn: "🔑 AI Models & API",
@@ -120,7 +120,7 @@
       btnRunningLLM: "⏳ Generating with AI...",
       aiOutputTitle: "✨ AI Generated Output",
       btnSendAiToEditor: "📥 Send AI Output to Draft Editor",
-      encTitle: "📖 Writing & Interview Methodology Encyclopedia (16 Core Frameworks)",
+      encTitle: "📖 Writing & Interview Methodology Encyclopedia (17 Core Frameworks)",
       encSub: "Click any framework card to apply it immediately to your project.",
       useThisMethod: "Apply Methodology",
       copiedToast: "✅ Copied to clipboard!"
@@ -469,14 +469,14 @@
     const footerStats = document.getElementById("footer-stats");
     if (footerStats) {
       footerStats.textContent = state.lang === "zh"
-        ? "6 大領域 × 24 種社群與商業面試載體 × 16 大寫作架構 × 7 大 AI 平台"
-        : "6 Fields × 24 Formats × 16 Frameworks × 7 LLM Providers";
+        ? "6 大領域 × 25 種社群與商業面試載體 × 17 大寫作架構 × 7 大 AI 平台"
+        : "6 Fields × 25 Formats × 17 Frameworks × 7 LLM Providers";
     }
     const footerDate = document.getElementById("footer-update-date");
     if (footerDate) {
       footerDate.textContent = state.lang === "zh"
-        ? "📅 最後更新日期 (Update Date)：2026-10-18"
-        : "📅 Last Updated: 2026-10-18";
+        ? "📅 最後更新日期 (Update Date)：2026-10-19"
+        : "📅 Last Updated: 2026-10-19";
     }
 
     updateApiButtonBadge();

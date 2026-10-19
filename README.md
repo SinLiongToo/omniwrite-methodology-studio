@@ -24,11 +24,11 @@
 
 ---
 
-## 🧭 涵蓋的 6 大領域與 24 種社群/商業/面試載體
+## 🧭 涵蓋的 6 大領域與 25 種社群/商業/面試載體
 
 | 領域 (Field) | 支援的社群平台與文體載體 (Communities & Formats) | 系統首選推薦寫作/答題法 |
 | :--- | :--- | :--- |
-| 📱 **社群自媒體** | Threads 觀點串文、X (Twitter) 推文串、Instagram 輪播圖文、Facebook 深度故事文、Reels/Shorts/TikTok 短影音腳本 | `PAS`、`HSO`、`BAB`、`PREP`、`TWIST` |
+| 📱 **社群自媒體** | **社群清單體 / 高密度列點文 (Listicle Post)**、Threads 觀點串文、X (Twitter) 推文串、Instagram 輪播圖文、Facebook 深度故事文、Reels/Shorts/TikTok 短影音腳本 | `LIST-5`、`PAS`、`HSO`、`BAB`、`PREP`、`TWIST` |
 | 💼 **專業職場與商業** | **商業面試問答（行為面試 ＆ 個案拆解）**、LinkedIn 專業洞察文、商業企劃與提案 (Proposal)、向上管理工作匯報、高回覆率 Cold Email | `STAR`、`SOAR+L`、`CASE-4`、`PREP`、`SCQA`、`PYRAMID` |
 | 📚 **深度內容與知識型** | Substack / 深度電子報、Medium / 部落格長文、技術文件與實戰教學 (Tech Docs) | `FEYNMAN`、`ZETTEL`、`PYRAMID`、`SCQA` |
 | 🔬 **學術研究與科普** | 期刊論文摘要與緒論 (Abstract & Intro)、研究計畫書 (Grant Proposal)、大眾科普轉譯文章 (SciComm) | `IMRaD`、`SCQA`、`FEYNMAN`、`ZETTEL` |
@@ -37,10 +37,10 @@
 
 ---
 
-## 🏛️ 內建 5 大類・16 種經典寫作與商業面試方法論
+## 🏛️ 內建 5 大類・17 種經典寫作與商業面試方法論
 
 - **🧠 邏輯與說服架構**：`PREP` 結論先行法、`SCQA` 麥肯錫結構敘事法、`PYRAMID` 金字塔原理（MECE）、`WHY-HOW-WHAT` 黃金圈法則、**`CASE-4` 商業個案面試拆解法 (Clarify-Structure-Analyze-Recommend)**
-- **🔥 行銷與社群爆款**：`PAS` 痛點激化轉換法、`BAB` 前後對比橋樑法、`AIDA` 經典漏斗說服法、`HSO` (Hook-Story-Offer) 爆款故事變現法
+- **🔥 行銷與社群爆款**：**`LIST-5` 社群爆款清單體 (Hook-Promise-Core-Bullets-Synthesis-CTA)**、`PAS` 痛點激化轉換法、`BAB` 前後對比橋樑法、`AIDA` 經典漏斗說服法、`HSO` (Hook-Story-Offer) 爆款故事變現法
 - **🎬 敘事與故事張力**：`STAR` 實戰復盤故事法、**`SOAR+L` 高階行為面試逆轉法 (Situation-Obstacle-Action-Result + Learning)**、`HERO` 英雄之旅濃縮版、`3-ACT` 好萊塢三幕劇結構、`TWIST` 反直覺認知衝突法
 - **🏛️ 知識管理與學術**：`IMRaD` 國際學術論文架構、`FEYNMAN` 費曼學習轉譯法、`ZETTEL` 卡片盒跨界串聯法
 - **✒️ 文學美學與創作**：`起承轉合` (Kishōtenketsu) 東方詩學四段論、`SHOW-ICE` 海明威冰山理論 × 五感沉浸法 (Show, Don't Tell)

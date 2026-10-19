@@ -14,8 +14,22 @@ window.WRITING_DATA = {
         zh: "強調黃金前三秒鉤子、情緒共鳴、視覺呼吸感與高互動分享率",
         en: "Focuses on 3-second hooks, emotional resonance, visual pacing, and shareability"
       },
-      recommendedMethods: ["pas", "hook_story_offer", "bab", "prep", "conflict_twist"],
+      recommendedMethods: ["listicle", "pas", "hook_story_offer", "bab", "prep", "conflict_twist"],
       platforms: [
+        {
+          id: "listicle_post",
+          name: { zh: "社群清單體 / 高密度列點文 (Listicle)", en: "Social Listicle & Bullet-Point Post" },
+          SweetSpot: { zh: "300–800 字（3–7 個結構化列點，每點 2–4 行）", en: "300–800 words (3–7 structured bullets)" },
+          algorithmTip: {
+            zh: "社群平台上「收藏率 (Saves)」與「完讀率」最高的格式！首行用奇數標示高價值清單（如：5個底層邏輯、7個避坑指南）；列點務求視覺工整對齊，每點包含【📌 核心金句 ＋ 具體做法 ＋ 避坑對比】；結尾給出 TL;DR 總結並拋出單選題留言互動。",
+            en: "Highest save-rate & skim-friendly format! Lead with odd numbers & bold promises; format bullets symmetrically with emojis; each bullet needs a bold principle + concrete tactical move + contrast; end with a 1-sentence TL;DR + save CTA."
+          },
+          hookFormulas: [
+            "關於 {topic}，這是我花了 3 年、踩過無數坑後總結出的 5 個底層邏輯（強烈建議收藏）👇",
+            "如果不想再被 {pain} 消耗，請把這 7 條關於 {topic} 的實戰清單印出來貼在螢幕旁：",
+            "90% 的 {audience} 都忽略了這 4 個關鍵盲點——這也是為什麼你在 {topic} 總是卡關："
+          ]
+        },
         {
           id: "threads",
           name: { zh: "Threads 觀點串文", en: "Threads Post / Thread" },
@@ -631,6 +645,62 @@ window.WRITING_DATA = {
     },
 
     // ==================== 行銷與社群爆款公式 (Marketing & Viral) ====================
+    {
+      id: "listicle",
+      category: "marketing",
+      code: "LIST-5",
+      name: { zh: "社群爆款清單體（高密度結構化列點法）", en: "Social Listicle & High-Density Bullet Framework" },
+      tagline: {
+        zh: "社群平台收藏率、完讀率與轉發率最高的乾貨格式，專治資訊爆炸與注意力稀缺",
+        en: "The #1 save-rate and skim-friendly format for viral social posts, Threads, X and LinkedIn"
+      },
+      bestForFields: ["social", "business", "deep_content"],
+      difficulty: "⭐ 入門必備",
+      pacing: "條理分明・高密度節奏",
+      summary: {
+        zh: "現代人在社群上只會『掃讀 (Scan)』不會『逐字讀』。清單體透過『黃金鉤子 + 3-7 條高度對齊的結構化列點 + 一句話總結昇華 + 收藏呼籲』，把龐大的知識降維成極好消化的精神乾糧。",
+        en: "Social readers scan before they read. Use a high-promise hook, 3-7 symmetrically structured bullets (Principle + Action + Contrast), a 1-sentence TL;DR synthesis, and a clear Save CTA."
+      },
+      steps: [
+        {
+          key: "HOOK",
+          label: { zh: "1. 破題鉤子 ＋ 數字價值承諾 (Hook & Number Promise)", en: "1. Hook & High-Value Number Promise" },
+          ratio: "15%",
+          purpose: { zh: "第一行點名受眾與痛點，並用奇數（3/5/7）承諾高含金量清單，引發立即收藏慾望。", en: "Call out target audience, state the pain, and promise high-density value with numbers." },
+          template: "【破題鉤子】\n關於【{topic}】，我見過太多【{audience}】因為【{pain}】而反覆內耗。\n這是我經過深度復盤與實測後，總結出的 5 個最關鍵破局底層邏輯（建議先點收藏，隨時回看）👇",
+          checklist: ["是否有明確的數字（如 3、5、7 點）？", "是否有承諾具體解決【痛點】的價值？"]
+        },
+        {
+          key: "BULLETS",
+          label: { zh: "2. 結構化核心列點 (Core High-Density Bullets)", en: "2. Symmetrical Actionable Bullets" },
+          ratio: "60%",
+          purpose: { zh: "3–5 個彼此獨立的列點，每點採用『標題金句 ＋ 具體做法 ＋ 避坑對比』工整排版。", en: "Deliver 3-5 structured bullets. Each point features a bold takeaway, tactical action, and contrast." },
+          template: "01. ＿＿＿＿＿＿（核心心法一）\n• 錯誤直覺：過去遇到【{pain}】，大多數人只會盲目硬幹。\n• 正確做法：在【{topic}】中，真正的槓桿是先做好＿＿＿＿＿＿。\n\n02. ＿＿＿＿＿＿（核心心法二）\n• 核心本質：把複雜流程模組化，避免每次都從零開始。\n• 實戰指引：每天花 10 分鐘檢視＿＿＿＿＿＿，立刻減少 40% 無效消耗。\n\n03. ＿＿＿＿＿＿（核心心法三）\n• 逆向思維：與其追求完美，不如先建立最小可行回饋迴路。\n• 避坑指南：千萬不要在＿＿＿＿＿＿上浪費過多精力。\n\n04. ＿＿＿＿＿＿（核心心法四）\n• 長期複利：將【{topic}】沉澱為可複用的資產與標準 SOP。",
+          checklist: ["每點格式是否工整（有標題、有正反對比、有具體行動）？", "每點字數是否維持在 2–4 行內，保有視覺呼吸感？"]
+        },
+        {
+          key: "TLDR",
+          label: { zh: "3. 一句話 TL;DR 總結昇華 (Synthesis)", en: "3. 1-Sentence TL;DR & Core Mental Model" },
+          ratio: "15%",
+          purpose: { zh: "將前面的所有列點收束為一個精闢的金句心智模型，便於記憶與轉發。", en: "Synthesize all bullets into one memorable takeaway or quotable mental model." },
+          template: "【一句話總結 TL;DR】\n面對【{topic}】，高手與普通人的差別從來不是付出的時間多寡，而是你是否掌握了系統化篩選與執行的能力：＿＿＿＿＿＿。",
+          checklist: ["是否有一句好記、值得截圖或劃線的金句？"]
+        },
+        {
+          key: "CTA",
+          label: { zh: "4. 開放式互動 ＋ 收藏行動呼籲 (Action & Save CTA)", en: "4. Discussion Question & Save CTA" },
+          ratio: "10%",
+          purpose: { zh: "拋出單選題或開放式提問引發留言演算法權重，並提醒讀者收藏備用。", en: "Prompt comments with an easy question to boost algorithmic distribution and remind to save." },
+          template: "【互動與收藏】\n上面這幾點中，哪一條最戳中你目前在【{pain}】的狀態？歡迎在留言區留下號碼或你的想法！\n如果這篇對你或身邊的【{audience}】有啟發，別忘了按個收藏／轉發支持 ✨",
+          checklist: ["是否有低門檻的留言互動提問？", "是否有明確引導點讚、收藏或轉推？"]
+        }
+      ],
+      pitfalls: {
+        zh: "常見錯誤：列點只寫抽象空洞的大道理（如『要堅持、要有熱情』），沒有具體行動與正反對比；每點長短不一，缺乏排版美感。",
+        en: "Listing generic vague slogans without concrete action steps; uneven bullet lengths that ruin visual scanning."
+      }
+    },
+
     {
       id: "pas",
       category: "marketing",

@@ -124,6 +124,19 @@ window.PRESET_EXAMPLES = [
     tone: "顧問專業感、結構嚴密、結論先行"
   },
   {
+    id: "preset_social_listicle",
+    label: { zh: "📱 社群列點文：高效產出的 5 個底層邏輯（高收藏清單體）", en: "📱 Social Listicle: 5 High-Impact Principles" },
+    fieldId: "social",
+    platformId: "listicle_post",
+    methodId: "listicle",
+    secondaryMethodId: "prep",
+    topic: "高效知識工作者的 5 個極簡輸出習慣",
+    audience: "每天資訊過載、想寫作輸出卻總是拖延卡關的創作者與白領",
+    pain: "收藏了大量文章和教學，真正要動筆時腦袋一片空白、無從下手",
+    goal: "極大化社群收藏率（Saves）與留言討論，打造高傳播條列式乾貨",
+    tone: "條理分明、節奏明快、字字珠璣、乾貨滿滿"
+  },
+  {
     id: "preset_social",
     label: { zh: "📱 社群爆款：AI 時代的個人護城河", en: "📱 Social: Personal Moat in the AI Era" },
     fieldId: "social",
@@ -218,7 +231,7 @@ window.generateStrategicDirections = function(state, lang = "zh") {
     ? window.WRITING_DATA.methodologies.find(m => m.id === state.secondaryMethodId)
     : null;
 
-  // 若選擇的是「商業面試問答」，提供專屬面試官視角的三大答題切角！
+  // 若選擇的是「商業面試問答」或「社群清單體」，提供專屬三大答題/排版切角！
   let angles;
   if (platform.id === "biz_interview") {
     angles = [
@@ -248,6 +261,36 @@ window.generateStrategicDirections = function(state, lang = "zh") {
         desc: lang === "zh"
           ? `在回答的最後 20 秒，主動將故事收束為一套 3 步驟框架，並加上：「這套方法正是我加入貴團隊後，前 90 天能立即協助解決相關挑戰的即戰力。」`
           : `In your final 20 seconds, package your story into a 3-step playbook and explicitly state how you will apply it in your first 90 days on their team.`
+      }
+    ];
+  } else if (platform.id === "listicle_post" || method.id === "listicle") {
+    angles = [
+      {
+        badge: lang === "zh" ? "切角 A｜反直覺逆向原則清單（最高轉發率）" : "Angle A | Counter-Intuitive Rules (High Shares)",
+        title: lang === "zh"
+          ? `總結「5 個關於 ${topic} 的反常識底層認知」`
+          : `Curate "5 Counter-Intuitive Rules for ${topic}"`,
+        desc: lang === "zh"
+          ? `每點都先戳破一個常見誤區，再給出高手才知道的反直覺解法，例如：『01. 與其拼命克服【${pain}】，不如直接砍掉無效流程』，極大化轉發驅動力。`
+          : `Challenge common habits with contrarian insights. Each bullet shatters a misconception before offering the high-leverage move.`
+      },
+      {
+        badge: lang === "zh" ? "切角 B｜極簡避坑紅黑榜（最高收藏率）" : "Angle B | Do's and Don'ts Checklist (High Saves)",
+        title: lang === "zh"
+          ? `為【${audience}】整理的「避坑防雷實戰清單」`
+          : `The Ultimate Do's and Don'ts Checklist for [${audience}]`,
+        desc: lang === "zh"
+          ? `採用工整對齊排版：『❌ 錯誤做法 vs. ✅ 正確做法』，將抽象建議轉化為明天上班或創作就能照著勾選的 Actionable Checklist，讓讀者忍不住按收藏。`
+          : `Structure each bullet with '❌ Mistake vs. ✅ Best Practice'. Turn abstract theory into an immediate checklist readers must save.`
+      },
+      {
+        badge: lang === "zh" ? "切角 C｜最小可行突破步驟（最高完讀率）" : "Angle C | Step-by-Step SOP (High Completion)",
+        title: lang === "zh"
+          ? `從 0 到 1 破局【${topic}】的 5 階段微行動`
+          : `5 Micro-Action Steps to Master ${topic} from 0 to 1`,
+        desc: lang === "zh"
+          ? `按執行順序遞進排列，每一步的執行門檻都壓低到 5 分鐘內，徹底擊碎【${pain}】帶來的拖延抗拒，並在最後拋出互動問答拉升留言權重。`
+          : `Chronological micro-steps lowering activation friction under 5 minutes, ending with an interactive poll to boost replies.`
       }
     ];
   } else {
@@ -332,11 +375,20 @@ window.buildMasterPrompt = function(state) {
     : "";
 
   const isInterview = platform.id === "biz_interview";
-  const outputRequirement4 = isInterview
-    ? `4. **【可直接口述的滿分面試逐字稿 ＋ 面試官追問防禦指南 (Follow-up Q&A)】**：
+  const isListicle = platform.id === "listicle_post" || method.id === "listicle";
+
+  let outputRequirement4;
+  if (isInterview) {
+    outputRequirement4 = `4. **【可直接口述的滿分面試逐字稿 ＋ 面試官追問防禦指南 (Follow-up Q&A)】**：
    - 提供一份約 90–120 秒、自然流暢且具領袖氣場的第一人稱（「我」）口語逐字稿，並在關鍵轉折處標註【語氣與停頓提示】。
-   - 額外預測面試官聽完後最可能犀利追問的 **2 個深水區問題（Follow-up Questions）**，並給出高段位回答要點。`
-    : `4. **【可直接發布的完整高品質初稿】**：完全褪去生硬的 AI 罐頭感，符合「${metaSummary.tone}」語氣與「${platform.name.zh}」排版呼吸感的完整作品。`;
+   - 額外預測面試官聽完後最可能犀利追問的 **2 個深水區問題（Follow-up Questions）**，並給出高段位回答要點。`;
+  } else if (isListicle) {
+    outputRequirement4 = `4. **【可直接發布的爆款社群清單體完稿（極致排版與高密度列點）】**：
+   - 結構必須嚴格包含：【黃金前言鉤子（點名受眾+奇數數字承諾）】 ➔ 【4–6 個對稱工整的列點（每點均含：Emoji編號 + 粗體核心金句 + 2行精煉做法 + 避坑對比）】 ➔ 【一句話 TL;DR 總結】 ➔ 【開放式留言互動提問 + 收藏呼籲】。
+   - 保持極佳的閱讀節奏感與留白，字字珠璣，完全褪去 AI 罐頭空話。`;
+  } else {
+    outputRequirement4 = `4. **【可直接發布的完整高品質初稿】**：完全褪去生硬的 AI 罐頭感，符合「${metaSummary.tone}」語氣與「${platform.name.zh}」排版呼吸感的完整作品。`;
+  }
 
   return `你是一位精通跨領域內容策略、頂級商業面試教練與結構化寫作的總編輯。請根據以下設定，為我量身打造一份完整的「寫作/答題策略、結構化範本與高品質完稿」：
 
